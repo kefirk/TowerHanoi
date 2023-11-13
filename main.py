@@ -27,7 +27,9 @@ gold = (239, 229, 51)
 blue = (78,162,196) 
 grey = (170, 170, 170)
 green = (77, 206, 145)
-
+BG = pygame.image.load("Background.png")
+MM = pygame.image.load("chudi.png")
+GM = pygame.image.load("estriper.png")
 def blit_text(screen, text, midtop, aa=True, font=None, font_name = None, size = None, color=(255,0,0)):
     if font is None:                                    # font option is provided to save memory if font is
         font = pygame.font.SysFont(font_name, size)     # already loaded and needs to be reused many times
@@ -40,11 +42,11 @@ def menu_screen():  # to be called before starting actual game loop
     global screen, n_disks, game_done
     menu_done = False
     while not menu_done:  # every screen/scene/level has its own loop
-        screen.fill(white)
+        screen.blit(MM, (0, 0))
         blit_text(screen, 'Towers of Hanoi', (323,122), font_name='sans serif', size=90, color=grey)
         blit_text(screen, 'Towers of Hanoi', (320,120), font_name='sans serif', size=90, color=gold)
-        blit_text(screen, 'Use arrow keys to select difficulty:', (320, 220), font_name='sans serif', size=30, color=black)
-        blit_text(screen, str(n_disks), (320, 260), font_name='sans serif', size=40, color=blue)
+        blit_text(screen, 'Use arrow keys to select difficulty:', (320, 220), font_name='sans serif', size=30, color=white)
+        blit_text(screen, str(n_disks), (320, 260), font_name='sans serif', size=40, color=white)
         blit_text(screen, 'Press ENTER to continue', (320, 320), font_name='sans_serif', size=30, color=black)
         for event in pygame.event.get():
             if event.type==pygame.KEYDOWN:
@@ -69,14 +71,14 @@ def menu_screen():  # to be called before starting actual game loop
 
 def game_over(): # game over screen
     global screen, steps
-    screen.fill(white)
+    screen.blit(GM, (0, 0))
     min_steps = 2**n_disks-1
     blit_text(screen, 'You Won!', (320, 200), font_name='sans serif', size=72, color=gold)
     blit_text(screen, 'You Won!', (322, 202), font_name='sans serif', size=72, color=gold)
-    blit_text(screen, 'Your Steps: '+str(steps), (320, 360), font_name='mono', size=30, color=black)
+    blit_text(screen, 'Your Steps: '+str(steps), (320, 360), font_name='mono', size=30, color=gold)
     blit_text(screen, 'Minimum Steps: '+str(min_steps), (320, 390), font_name='mono', size=30, color=red)
     if min_steps==steps:
-        blit_text(screen, 'You finished in minumum steps!', (320, 300), font_name='mono', size=26, color=green)
+        blit_text(screen, 'You finished in minumum steps!', (320, 300), font_name='mono', size=26, color=black)
     pygame.display.flip()
     time.sleep(2)   # wait for 2 secs 
     pygame.quit()   #pygame exit
@@ -182,11 +184,11 @@ while not game_done:
                     floating = False
                     disks[floater]['rect'].midtop = (towers_midx[pointing_at], 400-23)
                     steps += 1
-    screen.fill(white)
+    screen.blit(BG, (0, 0))
     draw_towers()
     draw_disks()
     draw_ptr()
-    blit_text(screen, 'Steps: '+str(steps), (320, 20), font_name='mono', size=30, color=black)
+    blit_text(screen, 'Steps: '+str(steps), (320, 20), font_name='mono', size=30, color=red)
     pygame.display.flip()
     if not floating:check_won()
     clock.tick(framerate)
